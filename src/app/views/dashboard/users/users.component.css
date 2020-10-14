@@ -1,0 +1,11 @@
+.searchfield{
+    float: right; 
+    width: 20%
+  }
+  
+@media screen and (max-width: 480px) {
+    .searchfield{
+        float: right !important; 
+        width: 100% !important;
+      }
+}

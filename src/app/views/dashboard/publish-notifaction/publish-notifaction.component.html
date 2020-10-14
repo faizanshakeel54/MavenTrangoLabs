@@ -1,0 +1,119 @@
+<div >
+
+	<div class="msg_history">
+		<div *ngFor='let data of Messages'>
+		<div class="incoming_msg">
+		  <div class="incoming_msg_img">
+			   <img style="border-radius: 65px;" src={{User_placeHolder_img}}  alt="sunil"> </div>
+		  <div class="received_msg">
+			<div class="received_withd_msg">
+
+          <p class="d-flex justify-content-between">{{data.message_body}} <i (click)="openModalConfirm(data)" class="fa fa-trash"></i></p>
+			  <span class="time_date">  {{DateCreater(data.date_time_created)}}</span></div>
+		  </div>
+		</div>
+		<div *ngIf='data.user_id_sender==1' class="outgoing_msg">
+			<div *ngIf='data.message_type=="text"'>
+			<div class="img_2">
+				<img  style="border-radius: 65px;" src={{AdminImage_placeHolder}} alt="sunil">
+			</div>
+		  <div class="sent_msg" style="    padding: 0px 13px 0px 0px;">
+
+			<p>{{data.message_body}}</p>
+			<span class="time_date"> {{DateCreater(data.date_time_created)}}</span>
+
+		</div>
+
+	</div>
+	<div    *ngIf="
+	data.media_type == 'jpg' ||
+    data.media_type == 'jpeg' ||
+	data.media_type == 'png' ||
+	data.media_type == 'JPG' ||
+    data.media_type == 'JPEG' ||
+	data.media_type == 'PNG'
+  ">
+		<div class="img_2">
+			<img  style="border-radius: 65px;" src={{Images_base_Url+data.user_name}} alt="sunil">
+		</div>
+	  <div class="sent_msg" style="    padding: 0px 13px 0px 0px;">
+
+	<img style="height: 200px;" src={{Images_base_Url+data.media_url}}>
+	<p *ngIf="data.message_body!=''">{{data.message_body}}</p>
+			<span class="time_date"> {{DateCreater(data.date_time_created)}}</span>
+	</div>
+	</div>
+			<div *ngIf='data.media_type=="pdf"'>
+				<div class="img_2">
+					<img  style="border-radius: 65px;" src={{Images_base_Url+data.user_name}} alt="sunil">
+				</div>
+			  <div class="sent_msg" style="    padding: 0px 13px 0px 0px;">
+
+
+				<p  *ngIf="data.message_body!=''">{{data.message_body}}</p>
+
+				<img class="fileIcon" (click)='goToLink(data.media_url)'
+				src="assets/337946.png" />
+				<span class="time_date"> {{DateCreater(data.date_time_created)}}</span>
+			</div>
+
+			</div>
+
+
+			<div *ngIf='data.media_type=="docx"'>
+				<div class="img_2">
+					<img  style="border-radius: 65px;" src={{Images_base_Url+data.user_name}} alt="sunil">
+				</div>
+			  <div class="sent_msg" style="    padding: 0px 13px 0px 0px;">
+
+
+
+				 <p  *ngIf="data.message_body!=''">  {{data.message_body}}</p>
+
+				 <img class="fileIcon" (click)='goToLink(data.media_url)'
+				 src="/assets/x-office-document-icon-papirus-mimetypes-iconset-papirus-office-documents-png-256_256.png" />
+
+			<span class="time_date">
+
+				{{DateCreater(data.date_time_created)}}
+
+
+			</span>
+			</div>
+
+			</div>
+		</div>
+	</div>
+	  </div>
+	  <form [formGroup]='MessageForm'>
+	  <div class="input-container">
+
+		<input class=" input-field"   type="text" formControlName='MessageBody' placeholder="Your Message" >
+
+		<input hidden type='file' #MulitfileMessage (change)='messageFile($event)' />
+		  <i class="fa fa-paperclip fa-1x icon1"  (click)='MulitfileMessage.click()'></i>
+		  <i class="fa fa-paper-plane icon" (click)='sendMessage()'></i>
+
+		</div>
+	</form>
+</div>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-clip-rotate-pulse"
+>
+</ngx-spinner>
+<modal #confirm>
+  <modal-header>
+   Confirm
+  </modal-header>
+  <modal-content>
+        Are you sure?
+
+  </modal-content>
+  <modal-footer>
+    <button type="button" class="btn btn-success" (click)="DelPublicMessage()">Confirm</button>
+    <button type="button" class="btn btn-danger" (click)="cancelConfirm()">Cancel</button>
+  </modal-footer>
+  </modal>
