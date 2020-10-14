@@ -96,7 +96,6 @@
               <th class="Th_1">Sr#</th>
               <th class="Th_2">Title</th>
               <th class="Th_4">Body</th>
-              <th class="Th_3">Attachment</th>
               <th class="Th_5">Action</th>
            </tr>
           </thead>
@@ -106,7 +105,7 @@
 <td>{{i+1}}</td>
 <td>{{data.title}}</td>
 <td>{{data.body}}</td>
-<td><img src={{Images_base_Url+data.media_url}} style="height: 140px;width: 120px;"></td>
+<!-- <td><img src={{Images_base_Url+data.media_url}} style="height: 140px;width: 120px;"></td> -->
 <td><i (click)='openModalConfirm(data)' class="fa fa-trash"></i></td>
 
 

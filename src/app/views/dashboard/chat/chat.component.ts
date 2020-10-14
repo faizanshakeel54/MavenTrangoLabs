@@ -28,11 +28,12 @@ export class ChatComponent implements OnInit {
 
 
   ngOnInit(): void {
-  this.getUserConve();
+    // setTimeout(() => {}, 5000);
+    this.getUserConve()
   this.MessageForm=this.fb.group({
     MessageBody:''
   })
-  }
+};
 
   public getUserConve=()=>{
 
