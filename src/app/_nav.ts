@@ -19,6 +19,7 @@ export const navItems: INavData[] = [
     url: '/dashboard/PersonalAdvice',
 
   },
+
   {
     name: 'Users',
     url: '/dashboard/Users',
@@ -34,7 +35,10 @@ export const navItems: INavData[] = [
     url: '/dashboard/publishnotification',
 
   },
-
+  {
+    name: 'Disclaimer',
+    url: '/dashboard/disclaimer',
+  },
 
   // PersonalAdvice
   // {

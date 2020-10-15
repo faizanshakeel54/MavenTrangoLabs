@@ -61,6 +61,7 @@ const customNotifierOptions: NotifierOptions = {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PersonalAdviceComponent } from './personal-advice/personal-advice.component';
 import { PublishNotifactionComponent } from './publish-notifaction/publish-notifaction.component';
+import { DisclaimerComponent } from './disclaimer/disclaimer.component';
 
 @NgModule({
   imports: [
@@ -81,6 +82,6 @@ import { PublishNotifactionComponent } from './publish-notifaction/publish-notif
 
   ],
   // tslint:disable-next-line: max-line-length
-  declarations: [ DashboardComponent, CommoditiesComponent, ChatComponent, NotificationComponent, UsersComponent, PersonalAdviceComponent, PublishNotifactionComponent ]
+  declarations: [ DashboardComponent, CommoditiesComponent, ChatComponent, NotificationComponent, UsersComponent, PersonalAdviceComponent, PublishNotifactionComponent, DisclaimerComponent ]
 })
 export class DashboardModule { }

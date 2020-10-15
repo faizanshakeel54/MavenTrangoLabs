@@ -46,6 +46,7 @@ export class CommoditiesComponent implements OnInit {
   @ViewChild('filepicker', { static: false }) filepicker : ElementRef;
   tempAdviceHistory: any;
   deleteAdvice: any;
+  commodityId: any;
 
   constructor(public modalService: ModalManager, public fb: FormBuilder,
     public service: AppserviceService,
@@ -157,12 +158,11 @@ export class CommoditiesComponent implements OnInit {
   fileCaptuer_2(event) {
     this.Advice_image_name = event.target.files[0].name;
     this.Advice_image = event.target.files[0]
-    console.log(event.target.files[0].name);
+    console.log('hh',event.target.files[0].name);
     let oninnerSection = false;
-    let _validFileExtensions = ["image/png", "image/jpeg", "image/bmp", "image/gif"];
-    for (let i = 0; i <= 3; i++) {
-      if (_validFileExtensions[i] == event.target.files[0].type) {
-
+    let _validFileExtensions = ["image/png", "image/jpeg", "image/jpg","image/bmp", "image/gif"];
+    for (let i = 0; i <= 4; i++) {
+      if (_validFileExtensions[i] === event.target.files[0].type) {
 
         this.ImageFile_of_commodity = event.target.files[0];
         let kb = event.target.files[0].size / 1000
@@ -170,7 +170,8 @@ export class CommoditiesComponent implements OnInit {
         if (mb > 3) {
           this.Adivce_Validator = false;
           this.AdviceImgError = true;
-          this.Advice_image_name = 'File Must Be less then 3 MBs'
+          this.Advice_image_name = 'File Must Be less than 3 MBs'
+          break;
         }
         else {
           this.Adivce_Validator = true;
@@ -254,21 +255,11 @@ export class CommoditiesComponent implements OnInit {
   }
 
   openModalHistory(adv) {
-    if (adv.values != null) {
+
       this.AdviceHistory = adv;
       this.recordFound = true;
-      console.log(adv);
       this.AdviceHistoryhide = true;
       this.AdviceHistoryshow = false;
-      this.getAllCommodities();
-    }
-    else {
-
-      this.noRecord = true;
-
-      console.log("No record Found!");
-
-    }
 
     this.modalRef = this.modalService.open(this.history, {
       size: "lg",
@@ -284,11 +275,20 @@ export class CommoditiesComponent implements OnInit {
     })
   }
 
+  // GetCommAdvByCommID(){
+  //   let x = {
+  //       user_id: localStorage.getItem('user_id'),
+  //       auth_token: localStorage.getItem('auth_token'),
+  //       comm_id: this.commodityId
+  //   };
+  //   console.log("commodity data" , x);
+  // }
+
   public closeModal=()=> {
    this.modalService.close(this.modalRef);
    this.Advoice_form.reset();
     this.Advice_image_name = null;
-  //  this.Advice_image = null;
+    this.Advice_image = null;
     this.AdviceImgError = false;
    this.filepicker.nativeElement.value = '';
    this.submitted = false;
@@ -334,21 +334,44 @@ export class CommoditiesComponent implements OnInit {
   public add_advice=()=> {
     this.submitted = true;
     if (this.Advoice_form.invalid) {
-      if (this.Advice_image_name == null) {
-        this.Advice_image_name = "file is required";
-        this.AdviceImgError = true;
+      // if (this.Advice_image_name == null) {
+      //   this.Advice_image_name = "file is required";
+      //   this.AdviceImgError = true;
+      // }
+      return;
+    }
+  // else if (this.Advice_image_name == null || this.Advice_image_name == 'file is required') {
+  //     this.Advice_image_name = "file is required";
+  //     this.AdviceImgError = true;
+  //     return;
+  //   }
+  else if(this.Advoice_form.valid || this.Adivce_Validator == true)
+  {
+    if(this.AdviceImgError == true)
+    {
+      console.log(" not img Hello")
+      let x = {
+        user_id: localStorage.getItem('user_id'),
+        auth_token: localStorage.getItem('auth_token'),
+        comm_id: this.Advice_Id,
+        by_if: this.Advoice_form.controls['buy_if'].value,
+        sell_if: this.Advoice_form.controls['Sell_if'].value,
+        stop_buy_loss_if: this.Advoice_form.controls['stop_buy_loss_if'].value,
+        stop_sell_loss_if: this.Advoice_form.controls['stop_sell_loss_if'].value,
+        take_buy_profit_if: this.Advoice_form.controls['take_buy_profit_if'].value,
+        take_sell_profit_if: this.Advoice_form.controls['take_sell_profit_if'].value,
+        adv_comments: this.Advoice_form.controls['advoice_comm'].value,
       }
-      return;
-    }
-    if (this.Advice_image_name == null || this.Advice_image_name == 'file is required') {
-      this.Advice_image_name = "file is required";
-      this.AdviceImgError = true;
-      return;
-    }
-    else if (this.Adivce_Validator == false) {
-      return;
-    }
-    else if (this.Adivce_Validator == true) {
+      console.log(x);
+      let a = this.getFormData(x);
+      this.service.Add_Advoice(a).subscribe((res: any) => {
+        console.log(res);
+        this.RestFormAdvice();
+        this.getAllCommodities();
+      })
+
+    } else {
+      console.log(" img Hello")
       let x = {
         user_id: localStorage.getItem('user_id'),
         auth_token: localStorage.getItem('auth_token'),
@@ -362,7 +385,6 @@ export class CommoditiesComponent implements OnInit {
         adv_comments: this.Advoice_form.controls['advoice_comm'].value,
         adv_attachment: this.Advice_image
       }
-
       console.log(x);
       let a = this.getFormData(x);
       this.service.Add_Advoice(a).subscribe((res: any) => {
@@ -372,6 +394,37 @@ export class CommoditiesComponent implements OnInit {
       })
     }
 
+
+  }
+
+    else if (this.Adivce_Validator == false) {
+      return;
+    }
+    // else if(this.Adivce_Validator == true) {
+    //    console.log("Hello With File")
+    //   let x = {
+    //     user_id: localStorage.getItem('user_id'),
+    //     auth_token: localStorage.getItem('auth_token'),
+    //     comm_id: this.Advice_Id,
+    //     by_if: this.Advoice_form.controls['buy_if'].value,
+    //     sell_if: this.Advoice_form.controls['Sell_if'].value,
+    //     stop_buy_loss_if: this.Advoice_form.controls['stop_buy_loss_if'].value,
+    //     stop_sell_loss_if: this.Advoice_form.controls['stop_sell_loss_if'].value,
+    //     take_buy_profit_if: this.Advoice_form.controls['take_buy_profit_if'].value,
+    //     take_sell_profit_if: this.Advoice_form.controls['take_sell_profit_if'].value,
+    //     adv_comments: this.Advoice_form.controls['advoice_comm'].value,
+    //     adv_attachment: this.Advice_image
+    //   }
+
+    //   console.log(x);
+    //   let a = this.getFormData(x);
+    //   this.service.Add_Advoice(a).subscribe((res: any) => {
+    //     console.log(res);
+    //     this.RestFormAdvice();
+    //     this.getAllCommodities();
+    //   })
+    // }
+
   }
   public RestFormAdvice = () => {
     this.Advoice_form.reset();
@@ -379,6 +432,7 @@ export class CommoditiesComponent implements OnInit {
     this.modalRef = this.modalService.close(this.myModal)
     this.Advice_image_name = null;
     this.AdviceImgError = false;
+    this.Advice_image = null;
     this.filepicker.nativeElement.value = '';
   }
 
@@ -452,6 +506,7 @@ export class CommoditiesComponent implements OnInit {
         this.AdviceHistoryhide = false;
         this.AdviceHistoryshow = true;
         this.AdviceHistoryDel = res.data;
+        this.getAllCommodities();
       }
 
     })

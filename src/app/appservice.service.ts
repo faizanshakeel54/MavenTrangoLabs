@@ -86,5 +86,16 @@ public token_varifying() {
   return !!localStorage.getItem('auth_token');
 }
 
+public GetDisclaimer = (): Observable<any[]> => {
+  return this.http.get<any[]>(this.BaseUrl + 'Admin/GetDisclaimer', {});
+}
+
+public AddUpdateDisclaimer  = (obj): Observable<any[]> => {
+  return this.http.post<any[]>(this.BaseUrl + 'Admin/AddUpdateDisclaimer' , obj);
+}
+
+
+
+
 
 }

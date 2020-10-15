@@ -157,37 +157,49 @@ closeModal() {
   this.modalService.close(this.modalRef);
 }
 submitnotifytion() {
+  console.log("Notification Clicked")
   this.submitted = true;
-  if (this.notificationForm.invalid) {
-    if (this.SelectedFileName == null) {
-      this.WrongFileTypeErrorColor = true;
-      this.SelectedFileName = 'file is required';
-    }
-    return;
-  } else if (this.SelectedFileName == null) {
-    this.WrongFileTypeErrorColor = true;
-    this.SelectedFileName = 'file is required';
-    return;
-  } else if (this.Selected_file_Size > 3) {
-    this.WrongFileTypeErrorColor = true;
-    this.SelectedFileName = 'File Size must be less then 3 MB';
-    return;
-  } else {
-  const x = {
-    title: this.notificationForm.controls['title'].value,
-    body: this.notificationForm.controls['body'].value,
-    attachment: this.SelectedFile,
-    user_id: localStorage.getItem('user_id'),
-    auth_token: localStorage.getItem('auth_token')
-  };
-  console.log(x);
-  const a = this.getFormData(x);
-this.service.CreateNewNotification(a).subscribe((res: any) => {
-  console.log(res);
-  this.toggleCard();
-  this.getAllNotification();
-});
+  this.WrongFileTypeErrorColor = false;
+  // if (this.notificationForm.invalid) {
+  //   if (this.SelectedFileName == null) {
+  //     this.WrongFileTypeErrorColor = true;
+  //     this.SelectedFileName = 'file is required';
+  //   }
+  //   return;
+  // } else if (this.SelectedFileName == null) {
+  //   this.WrongFileTypeErrorColor = true;
+  //   this.SelectedFileName = 'file is required';
+  //   return;
+  // } else if (this.Selected_file_Size > 3) {
+  //   this.WrongFileTypeErrorColor = true;
+  //   this.SelectedFileName = 'File Size must be less then 3 MB';
+  //   return;
+  // } else
+  // {
+
+  if(this.notificationForm.valid)
+  {
+    const x = {
+      title: this.notificationForm.controls['title'].value,
+      body: this.notificationForm.controls['body'].value,
+      attachment: this.SelectedFile,
+      user_id: localStorage.getItem('user_id'),
+      auth_token: localStorage.getItem('auth_token')
+    };
+    console.log(x);
+    const a = this.getFormData(x);
+  this.service.CreateNewNotification(a).subscribe((res: any) => {
+    console.log(res);
+    this.toggleCard();
+    this.getAllNotification();
+  });
   }
+  else
+  {
+    console.log("Invalid Form");
+  }
+
+ // }
 }
 getFormData(object) {
   const formData = new FormData();

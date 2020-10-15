@@ -103,7 +103,7 @@ export class PublishNotifactionComponent implements OnInit {
 
 
     // tslint:disable-next-line: triple-equals
-    } else if (body != '' && this.File_As_message != null) {
+    } else if (body != '' ) {
       x = {
         user_id: localStorage.getItem('user_id'),
         auth_token: localStorage.getItem('auth_token'),

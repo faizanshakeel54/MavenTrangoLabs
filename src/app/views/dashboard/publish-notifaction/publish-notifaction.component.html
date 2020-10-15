@@ -4,14 +4,20 @@
 		<div *ngFor='let data of Messages'>
 		<div class="incoming_msg">
 		  <div class="incoming_msg_img">
-			   <img style="border-radius: 65px;" src={{User_placeHolder_img}}  alt="sunil"> </div>
+         <img style="border-radius: 65px;" src={{User_placeHolder_img}} >
+         <small class="time_date">  {{DateCreater(data.date_time_created)}}</small>
+        </div>
 		  <div class="received_msg">
 			<div class="received_withd_msg">
 
           <p class="d-flex justify-content-between">{{data.message_body}} <i (click)="openModalConfirm(data)" class="fa fa-trash"></i></p>
-			  <span class="time_date">  {{DateCreater(data.date_time_created)}}</span></div>
+
+          <img style="border-radius: 15px;" src={{Images_base_Url+data.media_url}} >
+
+         </div>
 		  </div>
-		</div>
+    </div>
+    <br />
 		<div *ngIf='data.user_id_sender==1' class="outgoing_msg">
 			<div *ngIf='data.message_type=="text"'>
 			<div class="img_2">
@@ -21,7 +27,6 @@
 
 			<p>{{data.message_body}}</p>
 			<span class="time_date"> {{DateCreater(data.date_time_created)}}</span>
-
 		</div>
 
 	</div>
